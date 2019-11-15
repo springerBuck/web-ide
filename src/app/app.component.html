@@ -1,16 +1,16 @@
 <mat-grid-list cols="2" gutterSize="15">
   <mat-grid-tile colspan="1" rowspan="1">
-    <form class="form" [formGroup]="form" (ngSubmit)="run()">
+    <form class="form">
       <mat-grid-tile-header>Simple JS IDE
         <button mat-button type="button" (click)="setBasicOne()">Basic One</button>
         <button mat-button type="button" (click)="setBasicTwo()">Basic Two</button>
       </mat-grid-tile-header>
-      <mat-form-field appearance="outline">
-        <label for="code" aria-label="code"></label>
-        <textarea id="code" [formControl]="code" matInput placeholder="Muh CODE"></textarea>
-      </mat-form-field>
+<!--        <textarea id="code" [formControl]="code" matInput placeholder="Muh CODE"></textarea>-->
+      <div style="height: 500px">
+        <ngx-monaco-editor style="height: 100%" [options]="editorOptions"></ngx-monaco-editor>
+      </div>
       <mat-grid-tile-footer>
-        <button mat-button type="submit">run</button>
+        <button mat-button type="submit" (click)="run()">run</button>
       </mat-grid-tile-footer>
     </form>
   </mat-grid-tile>

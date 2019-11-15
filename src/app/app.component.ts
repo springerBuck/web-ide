@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
-import {DiffEditorModel} from "ngx-monaco-editor";
 
 @Component({
   selector: 'app-root',
@@ -9,26 +7,35 @@ import {DiffEditorModel} from "ngx-monaco-editor";
 })
 export class AppComponent implements OnInit {
   title = 'ide';
-  form: FormGroup;
-  editorOptions;
+  jsEditorOptions;
+  htmlEditorOptions;
   code: string;
-
-  originalModel: DiffEditorModel = {
-    code: 'heLLo world!',
-    language: 'text/plain'
-  };
-
-  modifiedModel: DiffEditorModel = {
-    code: 'hello orlando!',
-    language: 'text/plain'
-  };
+  markup: string;
+  public menuOpen: boolean = false;
 
   run() {
-    eval(this.code);
+    const frame = document.querySelector<HTMLIFrameElement>('#env');
+    frame.srcdoc = `
+    <html lang="en">
+      <head>
+      <title>some title</title>
+      </head>
+      <body>
+        <div id="main"></div>
+      </body>
+    </html>
+    `;
+    const script = frame.contentDocument.createElement('script');
+    script.setAttribute('type', 'application/javascript');
+    script.textContent = this.code;
+    frame.contentDocument.body.appendChild(script);
+    console.log(frame.contentDocument.body);
   }
 
   ngOnInit(): void {
-    this.editorOptions = {theme: 'vs-dark', language: 'javascript'};
+    this.jsEditorOptions = {theme: 'vs-dark', language: 'javascript'};
+    this.htmlEditorOptions = {theme: 'vs-dark', language: 'html'};
+    this.setBasicThree()
   }
 
   public setBasicOne() {
@@ -42,5 +49,21 @@ export class AppComponent implements OnInit {
     const c = a + b;
     console.log(c);
     `;
+  }
+
+  public setBasicThree() {
+    this.code = `
+      var div = document.createElement("div");
+      div.style.width = "100px";
+      div.style.height = "100px";
+      div.style.background = "red";
+      div.style.color = "white";
+      div.innerHTML = "Hello";
+      
+      document.getElementById("main").appendChild(div);`;
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 }

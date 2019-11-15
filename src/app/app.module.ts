@@ -1,18 +1,35 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { EditorComponent } from './components/editor/editor.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatGridListModule, MatInputModule} from "@angular/material";
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {EditorComponent} from './components/editor/editor.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatDividerModule,
+  MatGridListModule, MatIconModule,
+  MatInputModule, MatMenuModule, MatSidenavModule,
+  MatToolbarModule, MatTreeModule
+} from "@angular/material";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MonacoEditorModule, NgxMonacoEditorConfig} from "ngx-monaco-editor";
 
 const monacoConfig: NgxMonacoEditorConfig = {
-  baseUrl: 'app-name/assets', // configure base path for monaco editor default: './assets'
-  defaultOptions: { scrollBeyondLastLine: false }, // pass default options to be used
-  onMonacoLoad: () => { console.log((<any>window).monaco); } // here monaco object will be available as window.monaco use this function to extend monaco editor functionalities.
+  defaultOptions: {
+    scrollBeyondLastLine: false,
+    autoClosingBrackets: true,
+    autoIndent: true,
+    automaticLayout: true, // might give a performance hit
+    codeLens: true,
+    contextmenu: true,
+    dragAndDrop: true,
+    formatOnPaste: true,
+    formatOnType: true,
+    minimap: {enabled: false}
+  },
+  onMonacoLoad: () => { console.log((<any>window).monaco); }
 };
 
 @NgModule({
@@ -29,9 +46,17 @@ const monacoConfig: NgxMonacoEditorConfig = {
     MatInputModule,
     ReactiveFormsModule,
     MonacoEditorModule.forRoot(monacoConfig),
-    FormsModule
+    FormsModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatDividerModule,
+    MatIconModule,
+    MatMenuModule,
+    MatSidenavModule,
+    MatTreeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {MatDialog} from "@angular/material";
+import {GitHubLoginComponent} from "./components/git-hub-login/git-hub-login.component";
 
 @Component({
 	selector: 'app-root',
@@ -8,8 +10,15 @@ import {Component, OnInit} from '@angular/core';
 export class AppComponent implements OnInit {
 	title = 'ide';
 	code: string;
-	markup: string;
 	public menuOpen: boolean = false;
+	private clientId = '937ae5fe191fc6bf1fb2';
+	gitHubSignInUrl = `https://github.com/login/oauth/authorize?scope=user:email&client_id=${this.clientId}`;
+
+	constructor(public dialog: MatDialog){}
+
+	ngOnInit(): void {
+		this.setBasicThree()
+	}
 
 	run() {
 		const frame = document.querySelector<HTMLIFrameElement>('#env');
@@ -26,10 +35,6 @@ export class AppComponent implements OnInit {
 		</script>
     </html>
     `;
-	}
-
-	ngOnInit(): void {
-		this.setBasicThree()
 	}
 
 	public setBasicOne() {
@@ -59,5 +64,17 @@ export class AppComponent implements OnInit {
 
 	toggleMenu() {
 		this.menuOpen = !this.menuOpen;
+	}
+
+	openDialog(): void {
+		const dialogRef = this.dialog.open(GitHubLoginComponent, {
+			// width: '250px',
+			data: {name: 'this.name', animal: 'this.animal'}
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			console.log('The dialog was closed', result);
+			// this.animal = result;
+		});
 	}
 }
